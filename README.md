@@ -1,3 +1,43 @@
+- [Dialogue Summarization | 일상 대화 요약](#dialogue-summarization--일상-대화-요약)
+    - [Team](#team)
+    - [0. Overview](#overview)
+        - [Environments](#environments)
+        - [Requirements](#requirements)
+    - [1. Competiton Info](#1-competiton-info)
+        - [Introduce](#introduce)
+        - [Timeline](#timeline)
+    - [2. Components](#2-components)
+        - [Directory](#directory)
+    - [3. Data descrption](#3-data-descrption)
+        - [Dataset overview](#dataset-overview)
+        - [EDA & Data Processing](#eda--data-processing)
+            - [1. 오타 수정](#1-오타-수정)
+            - [2. 제대로 작성되지 않은 Topic](#2-제대로-작성되지-않은-topic)
+            - [3. [ ]로 감싸진 대화문 전체 제거](#3--로-감싸진-대화문-전체-제거)
+            - [4. Data performance](#4-data-performance)
+    - [4. Modeling](#4-modeling)
+        - [Model descrition](#model-descrition)
+            - [김주형](#김주형)
+                - [Dialogues 데이터 수치형 변환](#dialogues-데이터-수치형-변환)
+                - [Dialogue 데이터 클러스터링](#dialogue-데이터-클러스터링)
+            - [성명기](#성명기)
+                - [가설1. 입출력의 길이를 늘리면 성능이 좋아질 것이다.](#가설1-입출력의-길이를-늘리면-성능이-좋아질-것이다)
+                - [가설2. 학습률을 늘리면 성능이 좋아질 것이다.](#가설2-학습률을-늘리면-성능이-좋아질-것이다)
+                - [가설3. 학습률 스케줄러 유형을 변경하면 성능이 좋아질 것이다.](#가설3-학습률-스케줄러-유형을-변경하면-성능이-좋아질-것이다)
+                - [가설4. T5 모델중 Large모델링을 하면 성능이 대폭 상승할 것이다.](#가설4-t5-모델중-large모델링을-하면-성능이-대폭-상승할-것이다)
+            - [임동건](#임동건)
+                - [BART계열 모델 테스트](#bart계열-모델-테스트)
+                - [num_beam 파라미터 수정](#num_beam-파라미터-수정)
+                - [learning_rate 파라미터 수정](#learning_rate-파라미터-수정)
+            - [유정수](#유정수)
+            - [장재성](#장재성)
+    - [5. Result](#5-result)
+        - [Leader Board](#leader-board)
+        - [Presentation](#presentation)
+
+
+
+
 # Dialogue Summarization | 일상 대화 요약
 ## Team
 
@@ -19,7 +59,7 @@ pip install -r requirements.txt
 
 ## 1. Competiton Info
 
-### Overview
+### Introduce
 Dialogue Summarization 경진대회는 주어진 데이터를 활용하여 일상 대화에 대한 요약을 효과적으로 생성하는 모델을 개발하는 대회입니다. 
 
 일상생활에서 대화는 항상 이루어지고 있습니다. 회의나 토의는 물론이고, 사소한 일상 대화 중에도 서로 다양한 주제와 입장들을 주고 받습니다. 나누는 대화를 녹음해두더라도 대화 전체를 항상 다시 들을 수는 없기 때문에 요약이 필요하고, 이를 위한 통화 비서와 같은 서비스들도 등장하고 있습니다.
@@ -51,18 +91,17 @@ Dialogue Summarization 경진대회는 주어진 데이터를 활용하여 일�
 
 e.g.
 ```
-├── code
-│   ├── jupyter_notebooks
-│   │   └── model_train.ipynb
-│   └── train.py
-├── docs
-│   ├── pdf
-│   │   └── (Template) [패스트캠퍼스] Upstage AI Lab 1기_그룹 스터디 .pptx
-│   └── paper
-└── input
-    └── data
-        ├── eval
-        └── train
+├── JANG JAESEONG
+│   └── CODE
+├── KIM JUHYUNG
+│   └── CODE
+├── LIM DONGGUN
+│   └── CODE
+├── SEONG MYEONGGI
+│   └── CODE
+├── YU JEONGSU
+│   └── CODE
+└── README.md
 ```
 
 ## 3. Data descrption
@@ -193,7 +232,7 @@ train_df['topic'][7595] = '12살인 동생이 있다'
 - 빔 서치는 모델이 단어(토큰)를 하나씩 생성할 때, 단순히 매 스텝마다 가장 가능성이 높은 단어만 선택하는 것이 아니라, 여러 가지 후보 경로를 동시에 유지하며 가장 가능성이 높은 시퀀스를 찾는 방법
 - beam search 값을 높여서 더 높은 품질의 요약을 생성
 
-##### *learning_rate 파라미터 수정*
+##### *learning_rate 파라미터 수정*
 ![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/(%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%A5%E1%86%AB)lr.png?raw=true)
 - leaning_rate를 1e-6, 2.5e-6, 5e-6, 1e-5 수정 후 wandb를 활용한 성능 확인
 - 값이 낮을수록 속도는 느리지만 지속적인 학습 
