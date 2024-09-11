@@ -240,7 +240,64 @@ train_df['topic'][7595] = '12살인 동생이 있다'
 - 값이 낮을수록 속도는 느리지만 지속적인 학습 
 
 #### 유정수
+*few shot learning이란?*
+> LLM에게 몇 가지 예시를 제공하여  학습하는 방법입니다.
+새로운 작업에 빠르게 적응해야 하거나 학습 데이터가 부족한 상황에서 특히 유용합니다. 또한, LLM을 특정 분야나 스타일에 맞춰 미세 조정하는 데에도 활용될 수 있습니다.
+
+*실험내용*
+
+- 목표: test 데이터와 가장 유사한 train 데이터를 검색 후 few shot learning을 통한 성능 비교
+![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/%E1%84%83%E1%85%A1%E1%84%80%E1%85%AE%E1%86%A8%E1%84%8B%E1%85%A5%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20%E1%84%80%E1%85%A5%E1%86%B7%E1%84%89%E1%85%A2%E1%86%A8%20%E1%84%83%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%90%E1%85%A5%E1%84%89%E1%85%A6%E1%86%BA%20MIRACL.png?raw=true)
+![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/%E1%84%92%E1%85%A1%E1%86%AB%E1%84%80%E1%85%AE%E1%86%A8%E1%84%8B%E1%85%A5%20%E1%84%8B%E1%85%A5%E1%86%AB%E1%84%8B%E1%85%A5%E1%84%86%E1%85%A9%E1%84%83%E1%85%A6%E1%86%AF%20%E1%84%87%E1%85%A6%E1%86%AB%E1%84%8E%E1%85%B5%E1%84%86%E1%85%A1%E1%84%8F%E1%85%B3%20LogicKor.png?raw=true)
+    - 첫번째 이미지
+        - 검색 모델: bge-m3
+        - 다국어 문서 검색 데이터셋 MIRACL에서 가장 뛰어난 한국어 성능
+    - 두번째 이미지
+        - LLM: rtzr/ko-gemma-2-9b-it
+        - 한국어 언어모델 다분야 사고력 벤치마크 LogicKor에서 오프소스 모델 중 10B이하 가장 높은 순위
+
+*비교 실험*
+- zero shot으로 요약한 경우:  23.932점
+- 랜덤으로 train 데이터 예시를 넣어, few shot learning으로 요약한 경우: 29.312점
+- test 데이터와 유사한 train 데이터를 예시로 넣어, few shot learning을 한 경우 31.305점
+
+*문서 검색은 요약해야할 test 데이터의 dialogue와 train 데이터의 dialogue를 bge-m3 모델로 벡터화한 후 코사인 유사도로 가장 유사한 데이터를 검색하였습니다.*
+
+*결론*
+- test 데이터와 유사한 train 데이터를 검색 후 예시로 넣어 few shot learning을 하였을 때 가장 좋은 결과 나타남
+- 전체적으로 보았을 때 좋은 점수는 아니지만, llm에서 의도하는 데이터를 통해 few shot learning을 적용했을 때 효과 확인
+
 #### 장재성
+*아이디어*
+- Train Dataset과 Test Dataset이 영어를 번역한 번역체라는 점으로 미루어 보았을 때 원문이 영어일 가능성
+- 원문이 영어였다면 영어로 학습시키면 좀 더 좋은 성능을 가져올 수 있지 않을까?
+- 따라서 모든 Train 및 Test 데이터를 영어로 번역, 영어 모델을 사용하여 Output 생성 후 다시 한글로 번역?
+
+*실험순서*
+- Train 및 Tset 데이터를 한국어에서 영어로 번역
+- 영어 모델 선정 및 코드 수정
+- 해당 모델로 생성된 Output을 다시 한국어로 번역하여 제출
+
+*Translator 선정*
+- Google Translator, DeepL, Microsoft Translator
+- 이 중 DeepL은 무료 버전이 있지만 Train Data가 12000여개에 달하는 양으로 제한에 걸릴 가능성이 높아 제외
+- Google과 Microsoft 중 Google 번역기를 자주 사용했고 성능을 알기에 Google로 먼저 진행
+
+*진행 사항 및 문제점*
+- 12000여개에 달하는 Train Data는 Dialogue, Summary, Topic 총 3가지로 이루어져 있어 36000여개의 데이터가 있고 1개의 Data를 해석하는데 약 10시간이 걸림.
+-  실제 Dialogue, Summary는 최소 3초 이상 소요되어 전체 번역하는데 하루 소모
+- 처음에 번역이 잘 되는 것을 확인 후 전체 코드를 작성하였고 여기서 실수를 해 정확한 번역 데이터가 나오는 데는 반나절이 더 소모
+
+*LLM 영어 모델 선정*
+- Bart, T5, Pegasus
+    - Bart : baseline에서 주어진 모델 또한 Bart에서 파생되어 1순위로 선정
+    - T5 : 성명기 팀원이 좋은 성능을 이끌어낸 모델로 2순위 선정
+    - Pegasus : Translator가 Google인 점, 다만 논문, 뉴스 기사 등 긴 글에 특화된 점으로 3순위 선정
+
+*결과*
+
+![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/(%E1%84%8C%E1%85%A2%E1%84%89%E1%85%A5%E1%86%BC)%E1%84%87%E1%85%A5%E1%86%AB%E1%84%8B%E1%85%A7%E1%86%A8%E1%84%86%E1%85%A9%E1%84%83%E1%85%A6%E1%86%AF%E1%84%8C%E1%85%A6%E1%84%8E%E1%85%AE%E1%86%AF.png?raw=true)
+
 
 ## 5. Result
 
