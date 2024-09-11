@@ -144,29 +144,43 @@ train_df['topic'][7595] = '12살인 동생이 있다'
 
 ### Model descrition
 
-- _Write model information and why your select this model_
+#### 김주형
+#### 성명기
+*가설1. 입출력의 길이를 늘리면 성능이 좋아질 것이다.*
+![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/length%20%E1%84%89%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%92%E1%85%AE%20wandb%20%E1%84%89%E1%85%B5%E1%84%80%E1%85%A1%E1%86%A8%E1%84%92%E1%85%AA.png?raw=true)
+- decoder_max_len과 encoder_max_len 사이즈를 각각 200과 1024로 늘림
+    - 길이를 늘리면 CUDA Memory 이슈가 발생해서 Device Batch Size를 줄여줘야함
+- generation_max_length를 200 or 50으로 조정
+    - 50으로 조정시 기본값이었던 100보다 성능이 저하
+    - 200으로 조정시 기본값이었던 100보다 성능이 상승
+- generation_max_length의 값이 길수록 Rouge의 값이 좋아지지만 처리속도가 느려짐
+- 손실 값은 대부분의 설정에서 학습이 진행됨에 따라 감소하며 손실 값의 차이는 거의 비슷
 
-### Modeling Process
+*가설2. 학습률을 늘리면 성능이 좋아질 것이다.*
+![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/learning_rate%20%E1%84%89%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%92%E1%85%AE%20wandb%20%E1%84%89%E1%85%B5%E1%84%80%E1%85%A1%E1%86%A8%E1%84%92%E1%85%AA.png?raw=true)
+- ROUGE 점수는 lr 5e-05가 초반에는 좋지만, 훈련이 진행됨에 따라 오히려 성능이 하락하는 경향을 보이며, lr 1e-05는 꾸준히 성능이 증가
+- 손실의 경우, lr 5e-05 설정은 3k 단계 이후 손실이 다시 증가하는 것을 볼 수 있음. 반면, lr 3e-05와 lr 1e-05는 지속적으로 감소
+- 실행 시간은 학습률이 낮을수록 더 안정적으로 감소하는 경향을 보임
 
-- _Write model train and test process with capture_
+*가설3. 학습률 스케줄러 유형을 변경하면 성능이 좋아질 것이다.*
+![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/lr_type%20%E1%84%89%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%BC%20wandb%E1%84%89%E1%85%B5%E1%84%80%E1%85%A1%E1%86%A8%E1%84%92%E1%85%AA.png?raw=true)
+- lr_scheduler_type에 cosine, linear, cosine_with_restarts 3가지 실험
+- ROUGE-1 점수가 훈련 단계에 따라 증가하며 초반에 성능이 급격히 상승하다가 후반에서 점차 안정화
+- cos_with_restarts가 다른 설정보다 약간 높은 성능을 보임
+- 평가 손실은 대부분의 설정에서 학습이 진행됨에 따라 감소하며 손실 값의 차이는 거의 비슷
+
+*가설4. T5 모델중 Large모델링을 하면 성능이 대폭 상승할 것이다.*
+![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/T5%20%E1%84%89%E1%85%A5%E1%86%BC%E1%84%82%E1%85%B3%E1%86%BC%E1%84%8C%E1%85%B5%E1%84%91%E1%85%AD.png?raw=true)
+
+#### 임동건
+#### 유정수
+#### 장재성
 
 ## 5. Result
 
 ### Leader Board
-
-- _Insert Leader Board Capture_
-- _Write rank and score_
+![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/final%20score.png?raw=true)
 
 ### Presentation
 
-- _Insert your presentaion file(pdf) link_
-
-## etc
-
-### Meeting Log
-
-- _Insert your meeting log link like Notion or Google Docs_
-
-### Reference
-
-- _Insert related reference_
+- [Presentation]()
