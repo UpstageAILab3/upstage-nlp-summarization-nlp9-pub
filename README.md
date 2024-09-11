@@ -145,6 +145,18 @@ train_df['topic'][7595] = '12살인 동생이 있다'
 ### Model descrition
 
 #### 김주형
+*Dialogues 데이터 수치형 변환*
+![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/Dialogues%20%E1%84%83%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%90%E1%85%A5%20%E1%84%89%E1%85%AE%E1%84%8E%E1%85%B5%E1%84%92%E1%85%A7%E1%86%BC%20%E1%84%87%E1%85%A7%E1%86%AB%E1%84%92%E1%85%AA%E1%86%AB.png?raw=true)
+- 대화 내용들의 분류가 있음을 확인하고 토픽 분포 등을 분석함
+- Dialogue를 특징에 따라 나누기 위해 클러스터링 진행
+- 클러스터링을 위해 Bert 모델로 Dialogue 데이터를 임베딩하여 수치로 이루어진 데이터로 변환
+
+*Dialogue 데이터 클러스터링*
+![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/Dialogue%20%E1%84%83%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%90%E1%85%A5%20%E1%84%8F%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A5%E1%84%89%E1%85%B3%E1%84%90%E1%85%A5%E1%84%85%E1%85%B5%E1%86%BC.png?raw=true)
+- Dialogue를 특징에 따라 나누기 위해 클러스터링 진행
+- K-means 클러스터링 결과를 PCA로 시각화 하였고, 5개의 군집으로 데이터를 구분할 수 있다는 것을 알 수있음
+- 군집 데이터 별로 CSV 파일을 만들어 진행.
+
 #### 성명기
 *가설1. 입출력의 길이를 늘리면 성능이 좋아질 것이다.*
 ![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/length%20%E1%84%89%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%92%E1%85%AE%20wandb%20%E1%84%89%E1%85%B5%E1%84%80%E1%85%A1%E1%86%A8%E1%84%92%E1%85%AA.png?raw=true)
