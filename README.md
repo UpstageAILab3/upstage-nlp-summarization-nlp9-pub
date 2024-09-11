@@ -1,7 +1,7 @@
 - [Dialogue Summarization | 일상 대화 요약](#dialogue-summarization--일상-대화-요약)
     - [Team](#team)
-    - [0. Overview](#overview)
-        - [Environments](#environments)
+    - [0. Overview](#0-overview)
+        - [Environments](#environment)
         - [Requirements](#requirements)
     - [1. Competiton Info](#1-competiton-info)
         - [Introduce](#introduce)
@@ -13,7 +13,7 @@
         - [EDA & Data Processing](#eda--data-processing)
             - [1. 오타 수정](#1-오타-수정)
             - [2. 제대로 작성되지 않은 Topic](#2-제대로-작성되지-않은-topic)
-            - [3. [ ]로 감싸진 대화문 전체 제거](#3--로-감싸진-대화문-전체-제거)
+            - [3. [ ]로 감싸진 대화문 전체 제거](#3---로-감싸진-대화문-전체-제거)
             - [4. Data performance](#4-data-performance)
     - [4. Modeling](#4-modeling)
         - [Model descrition](#model-descrition)
@@ -35,8 +35,10 @@
         - [Leader Board](#leader-board)
         - [Presentation](#presentation)
 
+<br>
 
-
+---
+<br>
 
 # Dialogue Summarization | 일상 대화 요약
 ## Team
