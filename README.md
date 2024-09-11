@@ -183,4 +183,4 @@ train_df['topic'][7595] = '12살인 동생이 있다'
 
 ### Presentation
 
-- [Presentation](https://drive.google.com/file/d/1mMmu3chhJGGZ60h9Bph8K2aal57YwVZ1/view?usp=sharing)
+- [Presentation](https://drive.google.com/file/d/1XzhaUBO_9jicPUHMY99QXxmSpJdDvSWr/view)
