@@ -145,20 +145,20 @@ train_df['topic'][7595] = '12살인 동생이 있다'
 ### Model descrition
 
 #### 김주형
-*Dialogues 데이터 수치형 변환*
+##### *Dialogues 데이터 수치형 변환*
 ![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/Dialogues%20%E1%84%83%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%90%E1%85%A5%20%E1%84%89%E1%85%AE%E1%84%8E%E1%85%B5%E1%84%92%E1%85%A7%E1%86%BC%20%E1%84%87%E1%85%A7%E1%86%AB%E1%84%92%E1%85%AA%E1%86%AB.png?raw=true)
 - 대화 내용들의 분류가 있음을 확인하고 토픽 분포 등을 분석함
 - Dialogue를 특징에 따라 나누기 위해 클러스터링 진행
 - 클러스터링을 위해 Bert 모델로 Dialogue 데이터를 임베딩하여 수치로 이루어진 데이터로 변환
 
-*Dialogue 데이터 클러스터링*
+##### *Dialogue 데이터 클러스터링*
 ![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/Dialogue%20%E1%84%83%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%90%E1%85%A5%20%E1%84%8F%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A5%E1%84%89%E1%85%B3%E1%84%90%E1%85%A5%E1%84%85%E1%85%B5%E1%86%BC.png?raw=true)
 - Dialogue를 특징에 따라 나누기 위해 클러스터링 진행
 - K-means 클러스터링 결과를 PCA로 시각화 하였고, 5개의 군집으로 데이터를 구분할 수 있다는 것을 알 수있음
 - 군집 데이터 별로 CSV 파일을 만들어 진행.
 
 #### 성명기
-*가설1. 입출력의 길이를 늘리면 성능이 좋아질 것이다.*
+##### *가설1. 입출력의 길이를 늘리면 성능이 좋아질 것이다.*
 ![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/length%20%E1%84%89%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%92%E1%85%AE%20wandb%20%E1%84%89%E1%85%B5%E1%84%80%E1%85%A1%E1%86%A8%E1%84%92%E1%85%AA.png?raw=true)
 - decoder_max_len과 encoder_max_len 사이즈를 각각 200과 1024로 늘림
     - 길이를 늘리면 CUDA Memory 이슈가 발생해서 Device Batch Size를 줄여줘야함
@@ -168,23 +168,36 @@ train_df['topic'][7595] = '12살인 동생이 있다'
 - generation_max_length의 값이 길수록 Rouge의 값이 좋아지지만 처리속도가 느려짐
 - 손실 값은 대부분의 설정에서 학습이 진행됨에 따라 감소하며 손실 값의 차이는 거의 비슷
 
-*가설2. 학습률을 늘리면 성능이 좋아질 것이다.*
+##### *가설2. 학습률을 늘리면 성능이 좋아질 것이다.*
 ![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/learning_rate%20%E1%84%89%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%92%E1%85%AE%20wandb%20%E1%84%89%E1%85%B5%E1%84%80%E1%85%A1%E1%86%A8%E1%84%92%E1%85%AA.png?raw=true)
 - ROUGE 점수는 lr 5e-05가 초반에는 좋지만, 훈련이 진행됨에 따라 오히려 성능이 하락하는 경향을 보이며, lr 1e-05는 꾸준히 성능이 증가
 - 손실의 경우, lr 5e-05 설정은 3k 단계 이후 손실이 다시 증가하는 것을 볼 수 있음. 반면, lr 3e-05와 lr 1e-05는 지속적으로 감소
 - 실행 시간은 학습률이 낮을수록 더 안정적으로 감소하는 경향을 보임
 
-*가설3. 학습률 스케줄러 유형을 변경하면 성능이 좋아질 것이다.*
+##### *가설3. 학습률 스케줄러 유형을 변경하면 성능이 좋아질 것이다.*
 ![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/lr_type%20%E1%84%89%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%BC%20wandb%E1%84%89%E1%85%B5%E1%84%80%E1%85%A1%E1%86%A8%E1%84%92%E1%85%AA.png?raw=true)
 - lr_scheduler_type에 cosine, linear, cosine_with_restarts 3가지 실험
 - ROUGE-1 점수가 훈련 단계에 따라 증가하며 초반에 성능이 급격히 상승하다가 후반에서 점차 안정화
 - cos_with_restarts가 다른 설정보다 약간 높은 성능을 보임
 - 평가 손실은 대부분의 설정에서 학습이 진행됨에 따라 감소하며 손실 값의 차이는 거의 비슷
 
-*가설4. T5 모델중 Large모델링을 하면 성능이 대폭 상승할 것이다.*
+##### *가설4. T5 모델중 Large모델링을 하면 성능이 대폭 상승할 것이다.*
 ![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/T5%20%E1%84%89%E1%85%A5%E1%86%BC%E1%84%82%E1%85%B3%E1%86%BC%E1%84%8C%E1%85%B5%E1%84%91%E1%85%AD.png?raw=true)
 
 #### 임동건
+##### *BART계열 모델 테스트*
+![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/(%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%A5%E1%86%AB)bart%E1%84%80%E1%85%A8%E1%84%8B%E1%85%A7%E1%86%AF.png?raw=true)
+
+##### *num_beam 파라미터 수정*
+![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/(%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%A5%E1%86%AB)num_beam.png?raw=true)
+- 빔 서치는 모델이 단어(토큰)를 하나씩 생성할 때, 단순히 매 스텝마다 가장 가능성이 높은 단어만 선택하는 것이 아니라, 여러 가지 후보 경로를 동시에 유지하며 가장 가능성이 높은 시퀀스를 찾는 방법
+- beam search 값을 높여서 더 높은 품질의 요약을 생성
+
+##### *learning_rate 파라미터 수정*
+![](https://github.com/SUNGMYEONGGI/image/blob/main/Upstage-NLP-Project_Image/(%E1%84%83%E1%85%A9%E1%86%BC%E1%84%80%E1%85%A5%E1%86%AB)lr.png?raw=true)
+- leaning_rate를 1e-6, 2.5e-6, 5e-6, 1e-5 수정 후 wandb를 활용한 성능 확인
+- 값이 낮을수록 속도는 느리지만 지속적인 학습 
+
 #### 유정수
 #### 장재성
 
